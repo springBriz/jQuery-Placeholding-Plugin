@@ -43,12 +43,12 @@
 				}
 
 				// prevent duplicating
-				if ($(this).data('placeholdingapplied') === 1){
+				if ($(this).data('placeholdingapplied') === '1'){
 					return false;
 				}
-				$(this).data('placeholdingapplied', 1);
+				$(this).data('placeholdingapplied', '1');
 
-				// bind event handler to input & textarea tag
+				// bind event handler to input & textarea elements
 				$(this).on({
 					'focus': function(){
 						whenFocus($(this));
