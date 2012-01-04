@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>PlaceHolding Sample Page</title>
+</head>
+<body>
+	<div>
+		<form name="a" method="get">
+			<input type="text" name="a" placeholder="aaa">
+			<textarea name="b" placeholder="bbb"></textarea>
+			<input type="submit">
+			<br>
+			<button type="button" id="add">ADD input element</button>
+		</form>
+
+		<form name="b" method="get">
+			<input type="text" name="a" placeholder="aaa2" value="vvv">
+			<textarea name="b" placeholder="bbb2"></textarea>
+			<input type="submit">
+		</form>
+	</div>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script src="./jquery.placeholding.plugin.js"></script>
+
+	<script>
+	//
+	$('form').placeholding();
+	
+	//
+	$('form').submit(function(){
+		return false;
+	});
+	
+	// You MUST trigger a blur event when dynamically creating input or textarea element.
+	$('#add').on({
+		'click': function(){
+			$('<input type="text" placeholder="asdf">').appendTo($(this).parents('form')).trigger('blur');
+		}
+	});
+	</script>
+</body>
+</html>

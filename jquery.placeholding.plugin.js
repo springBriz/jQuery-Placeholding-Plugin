@@ -1,26 +1,40 @@
 /**
  * PlaceHolding
  * 
- * @description	placeholder replacement for IE
+ * @description	placeholder replacement
  * @author		aprilbriz@gmail.com
- *
- * @usage		$('form').placeholding()
+ * 
+ * @require		jQuery 1.7 or later
+ * @usage		$('form').placeholding();
  */
-
 (function($){
      $.fn.extend({
          placeholding: function() {
-			var nativeSupport = (function(){
-				return ('placeholder' in document.createElement('input'));
-			})();
-			if (nativeSupport === true){
+			if ((function(){ return ('placeholder' in document.createElement('input')); })() === true){
 				return false;
 			}
 
-			var STATUS = {
-				ON: 1,
-				OFF: 0
-			};
+			var STATUS = { ON: 1, OFF: 0 };
+
+			//
+			function whenBlur($elmt){
+				if ($elmt.val() == ''){
+					$elmt.data('originalcolor', $elmt.css('color'));
+					$elmt.css('color', 'rgb(127, 127, 127)');
+					$elmt.val($elmt.attr('placeholder'));
+					$elmt.data('placeholdingstatus', STATUS.ON);
+				}else{
+					$elmt.data('placeholdingstatus', STATUS.OFF);
+				}
+			}
+			
+			//
+			function whenFocus($elmt){
+				if ($elmt.data('placeholdingstatus') === STATUS.ON){
+					$elmt.val('');
+					$elmt.css('color', $elmt.data('originalcolor'));
+				}
+			}
 
 			return this.each(function(){
 				// allow only form tag
@@ -28,46 +42,31 @@
 					return false;
 				}
 
-				// input & textarea tag
-				$('input[placeholder], textarea[placeholder]', this).each(function(i, e){
-					var $elmt = $(e);
-					if ($elmt.data('placeholdingstatus') in STATUS){
-						return false;
+				// prevent duplicating
+				if ($(this).data('placeholdingapplied') === 1){
+					return false;
+				}
+				$(this).data('placeholdingapplied', 1);
+
+				// bind event handler to input & textarea tag
+				$(this).on({
+					'focus': function(){
+						whenFocus($(this));
+					},
+					'blur': function(){
+						whenBlur($(this));
 					}
+				}, 'input[placeholder], textarea[placeholder]');
 
-					function setPlaceholder($elmt){
-						if ($.trim($elmt.val()) === ''){
-							$elmt.val($elmt.attr('placeholder'));
-							$elmt.data('placeholdingstatus', STATUS.ON);
-						}else{
-							$elmt.data('placeholdingstatus', STATUS.OFF);
-						}
-					}
-
-					$elmt.bind({
-						'focus': function(){
-							if ($elmt.data('placeholdingstatus') === STATUS.ON){
-								$elmt.val('');
-							}
-						},
-						'blur': function(){
-							setPlaceholder($elmt);
-						}
-					});
-					
-					// init
-					setPlaceholder($elmt);
-				});
-
-				// submit handler
-				$(this).submit(function(){
+				// bind submit handler
+				$(this).on('submit', function(){
 					$('input[placeholder], textarea[placeholder]', this).each(function(i, e){
-						var $elmt = $(e);
-						if ($elmt.data('placeholdingstatus') === STATUS.ON){
-							$elmt.val('');
-						}
+						whenFocus($(e));
 					});
 				});
+
+				// init (triggering blur event)
+				$('input[placeholder], textarea[placeholder]', this).trigger('blur');
 			});
          }
     });
