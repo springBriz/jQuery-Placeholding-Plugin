@@ -1,7 +1,7 @@
 /**
  * PlaceHolding
  * 
- * @description	placeholder replacement
+ * @description	mimic placeholder
  * @author		aprilbriz@gmail.com
  * 
  * @require		jQuery 1.7 or later
