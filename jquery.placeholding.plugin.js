@@ -8,8 +8,8 @@
  * @usage		$('form').placeholding();
  */
 (function($){
-     $.fn.extend({
-         placeholding: function() {
+	$.fn.extend({
+		placeholding: function() {
 			if ((function(){ return ('placeholder' in document.createElement('input')); })() === true){
 				return false;
 			}
@@ -68,6 +68,6 @@
 				// init (triggering blur event)
 				$('input[placeholder], textarea[placeholder]', this).trigger('blur');
 			});
-         }
-    });
+		}
+	});
 })(jQuery);
