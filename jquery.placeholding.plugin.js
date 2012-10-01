@@ -20,7 +20,7 @@
 			function whenBlur($elmt){
 				if ($elmt.val() == ''){
 					$elmt.data('originalcolor', $elmt.css('color'));
-					$elmt.css('color', 'rgb(127, 127, 127)');
+					$elmt.css('color', 'rgb(153, 153, 153)');
 					$elmt.val($elmt.attr('placeholder'));
 					$elmt.data('placeholdingstatus', STATUS.ON);
 				}else{
