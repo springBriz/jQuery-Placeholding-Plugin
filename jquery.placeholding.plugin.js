@@ -33,6 +33,7 @@
 				if ($elmt.data('placeholdingstatus') === STATUS.ON){
 					$elmt.val('');
 					$elmt.css('color', $elmt.data('originalcolor'));
+					$elmt.data('placeholdingstatus', STATUS.OFF);
 				}
 			}
 
